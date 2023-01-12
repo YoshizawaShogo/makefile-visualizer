@@ -36,7 +36,7 @@ def _parse_entries(fp):
             return deps_graph
         elif l.startswith('# Not a target:'):
             _skip_until_next_entry(fp)
-        elif l.startswith("# makefile (from '"):
+        elif l.startswith("# makefile (from '") or l.startswith("# 'override' directive"):
             fp.readline() # skip information on target specific variable value
         else:
             _parse_entry(l, deps_graph)
