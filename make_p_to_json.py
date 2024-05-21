@@ -13,14 +13,9 @@ def main():
 
 
 def parse_make_p(fp, graphs=None):
-    if graphs is None:
-        graphs = []
     for l in fp:
         if l.startswith('# Make data base, printed on '):
-            graphs.append(_parse_db(fp))
-    if not graphs:
-        raise ValueError("{} seems not connected to `LANG=C make -p`".format(fp))
-    return graphs
+            return _parse_db(fp)
 
 
 def _parse_db(fp):

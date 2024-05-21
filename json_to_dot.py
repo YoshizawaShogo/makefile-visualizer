@@ -29,8 +29,8 @@ digraph G {
     ]
     """)
     i = Id()
-    for graph in json.load(sys.stdin):
-        print_single_graph(graph, i)
+    graph = json.load(sys.stdin)
+    print_single_graph(graph, i)
     print("}")
 
 
