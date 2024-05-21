@@ -3,11 +3,13 @@
 import sys
 import json
 import re
+from pprint import pprint
 
 
-def main(args):
-    _parse_args(args)
-    json.dump(parse_make_p(sys.stdin), sys.stdout)
+def main():
+    makefile_graph = parse_make_p(sys.stdin)
+    # pprint(makefile_graph)
+    json.dump(makefile_graph, sys.stdout)
 
 
 def parse_make_p(fp, graphs=None):
@@ -25,9 +27,11 @@ def _parse_db(fp):
     for l in fp:
         if l.startswith('# Files'):
             fp.readline() # skip the first empty line
-            return _parse_entries(fp)
+            entries = _parse_entries(fp)
+            for key in entries:
+                entries[key] = list(set(entries[key]))
+            return entries
     return {}
-
 
 def _parse_entries(fp):
     deps_graph = {}
@@ -43,30 +47,18 @@ def _parse_entries(fp):
             _skip_until_next_entry(fp)
     return deps_graph
 
-
-
 TARGET_SPLIT_REGEX = re.compile(r':{1,2} *')
 def _parse_entry(l, deps_graph):
     target, deps = TARGET_SPLIT_REGEX.split(l, 1)
     deps_graph[target] = [dep for dep in deps.split() if dep != '|']
-
 
 def _skip_until_next_entry(fp):
     for l in fp:
         if _is_new_entry(l):
             return
 
-
 def _is_new_entry(s):
     return s.startswith('\n')
 
-
-def _parse_args(args):
-    if len(args) != 1:
-        print("# parse Makefile's database and print dependency graph in JSON format")
-        print("LANG=C gmake -p | {} | json_to_dot.py | dot -Tpdf >| workflow.pdf".format(args[0]))
-        sys.exit(1)
-
-
 if __name__ == '__main__':
-    main(sys.argv)
+    main()

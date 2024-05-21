@@ -15,8 +15,8 @@ $ LANG=C make -p | python3 make_p_to_json.py | python3 json_to_dot.py | dot -Tpd
 # $ bash 'this directory path'/makefile_to_pdf.sh
 ```
 
-## Result
-![result](result.png "result of makefile for hariboteOS")
+## sample result
+[sample result](sample/workflow.pdf)
 
 ## Prerequisite 
 ```bash
