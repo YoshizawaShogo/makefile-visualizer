@@ -3,7 +3,6 @@
 import sys
 import json
 
-
 class Id(object):
 
     def __init__(self):
